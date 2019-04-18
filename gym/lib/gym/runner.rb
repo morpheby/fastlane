@@ -25,12 +25,14 @@ module Gym
         return BuildCommandGenerator.archive_path if Gym.config[:skip_package_ipa]
 
         package_app
-        compress_and_move_dsym
-        path = move_ipa
-        move_manifest
-        move_app_thinning
-        move_app_thinning_size_report
-        move_apps_folder
+        unless Gum.config[:using_xcodebuild_appstore_upload]
+          compress_and_move_dsym
+          path = move_ipa
+          move_manifest
+          move_app_thinning
+          move_app_thinning_size_report
+          move_apps_folder
+        end
       elsif Gym.project.mac?
         path = File.expand_path(Gym.config[:output_directory])
         compress_and_move_dsym
