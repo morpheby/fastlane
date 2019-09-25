@@ -7,7 +7,7 @@ module Fastlane
         def discover_crashlytics_path(params)
           path = params[:crashlytics_path]
 
-          # Finding submit binary inside of given Crashlytics path (for backwards compatability)
+          # Finding submit binary inside of given Crashlytics path (for backwards compatibility)
           if path
             if File.basename(path) != "submit"
               path = Dir[File.join(path, '**', 'submit')].last
@@ -108,7 +108,7 @@ module Fastlane
 
             UI.important("Downloading Crashlytics Support Library - this might take a minute...")
             result = http_conn.request_get(uri.path)
-            UI.error!("#{result.message} (#{result.code})") unless result.kind_of?(Net::HTTPSuccess)
+            UI.error("#{result.message} (#{result.code})") unless result.kind_of?(Net::HTTPSuccess)
             File.write(zip_path, result.body)
 
             # Now unzip the file
