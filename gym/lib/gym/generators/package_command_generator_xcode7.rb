@@ -86,10 +86,17 @@ module Gym
         return path if path
 
         path = Dir[File.join(temporary_output_path, "*.pkg")].last
+        isApp = false
+        
+        if not path
+          path = Dir[File.join(temporary_output_path, "*.app")].last
+          isApp = true if path
+        end
+        
         # We need to process generic PKG
         if path
           # Try to find PKG file in the output directory, used when app thinning was not set
-          Gym.cache[:pkg_path] = File.join(temporary_output_path, "#{Gym.config[:output_name]}.pkg")
+          Gym.cache[:pkg_path] = File.join(temporary_output_path, "#{Gym.config[:output_name]}.#{isApp ? ".app" : ".pkg"}")
           FileUtils.mv(path, Gym.cache[:pkg_path]) unless File.expand_path(path).casecmp(File.expand_path(Gym.cache[:pkg_path]).downcase).zero?
         elsif Dir.exist?(apps_path)
           # Try to find "generic" PKG file inside "Apps" folder, used when app thinning was set
